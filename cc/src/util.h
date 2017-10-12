@@ -79,7 +79,7 @@ public:
      *  @param s 文字列
      *  @param delim 区切り
      *  @return delimで分割された文字列
-     *  @pre Tがstd::charT以外のときのコンパイル結果およびその動作は未定義である．
+     *  @pre Tがstd::charT継承クラス(char32_t)以外のときのコンパイル結果およびその動作は未定義である．
      */
     template <typename T>
     static std::vector<std::basic_string<T>> split(
@@ -118,7 +118,7 @@ public:
      *  @return 判定
      *  @retval true startで始まる
      *  @retval false startで始まらない
-     *  @pre Tがstd::charT以外のときのコンパイル結果およびその動作は未定義である．
+     *  @pre Tがstd::charT継承クラス(char32_t)以外のときのコンパイル結果およびその動作は未定義である．
      */
     template <typename T>
     static bool startswith(

@@ -1,4 +1,4 @@
-#include "util.h"
+#include "lib.h"
 #include <codecvt>
 #include <uchar.h>
 #include <unistd.h>
@@ -6,36 +6,36 @@
 #include <stdio.h>
 #include <sys/wait.h>
 
-std::u32string util::u8tou32(const std::string& u8s) {
+std::u32string lib::u8tou32(const std::string& u8s) {
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     return converter.from_bytes(u8s);
 }
 
-std::string util::u32tou8(const std::u32string& u32s) {
+std::string lib::u32tou8(const std::u32string& u32s) {
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     return converter.to_bytes(u32s);
 }
 
-std::u32string util::charstou32(const char *chars) {
+std::u32string lib::charstou32(const char *chars) {
     return u8tou32(std::string(chars));
 }
 
-std::string util::c32tou8(const char32_t& c32) {
+std::string lib::c32tou8(const char32_t& c32) {
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     return converter.to_bytes(c32);
 }
 
-std::u32string util::fdtou32(const int fd) {
+std::u32string lib::fdtou32(const int fd) {
     std::vector<char> b;
     b.reserve(1024);
     char c = 0;
     while (read(fd, &c, 1)) {
         b.push_back(c);
     }
-    return util::u8tou32(std::string(b.begin(), b.end()));
+    return u8tou32(std::string(b.begin(), b.end()));
 }
 
-char *util::fdtochar(const int fd) {
+char *lib::fdtochar(const int fd) {
     const size_t size = 1024;
     char *b = (char *)malloc(size);
     char *c = NULL;
@@ -54,26 +54,7 @@ char *util::fdtochar(const int fd) {
     return b;
 }
 
-size_t util::twidth(const char32_t c32) {
-    char32_t c;
-    // 半角カタカナ 0000 ff61 から 0000 ff9f まで
-    if (c32 >= 0x0000'ff61 && c32 <= 0x0000'ff9f) {
-        return 1;
-    }
-    if (util::endian()) {
-        c = (c32 >> 8);
-    } else {
-        c = (c32 << 8);
-    }
-    return c ? 2 : 1;
-}
-
-bool util::endian() {
-    char32_t e = 1;
-    return *(char *)&e ? true : false;
-}
-
-int util::execute_base(
+int lib::execute_base(
     char * const *command,
     const char *in,
     int& poutr,
@@ -83,7 +64,7 @@ int util::execute_base(
     int pipein[2], pipeout[2], pipeerr[2];
     int pid;
     int ret;
-
+    
     if (pipe(pipein) < 0) {
         BOOST_THROW_EXCEPTION(process_error());
     }
@@ -156,7 +137,7 @@ int util::execute_base(
     return ret;
 }
 
-int util::execute_low(
+int lib::execute_low(
     char * const *command,
     const char *in,
     char*& out,
@@ -164,12 +145,12 @@ int util::execute_low(
     int poutr = 0;
     int perrr = 0;
     int ret = execute_base(command, in, poutr, perrr);
-    out = util::fdtochar(poutr);
-    err = util::fdtochar(perrr);
+    out = fdtochar(poutr);
+    err = fdtochar(perrr);
     return ret;
 }
 
-int util::execute(
+int lib::execute(
     char * const *command,
     const std::u32string& in,
     std::u32string& out,
@@ -179,8 +160,8 @@ int util::execute(
     int poutr = 0;
     int perrr = 0;
     int ret = execute_base(command, cin, poutr, perrr);
-    out = util::fdtou32(poutr);
-    err = util::fdtou32(perrr);
+    out = fdtou32(poutr);
+    err = fdtou32(perrr);
     return ret;
 }
 

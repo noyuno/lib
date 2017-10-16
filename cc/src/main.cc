@@ -10,7 +10,8 @@ void test_property();
 
 int main(int argc, char** argv)
 {
-    test_property();
+    test_string();
+    //test_property();
     return 0;
 }
 
@@ -45,7 +46,10 @@ void test_string() {
     assert(c32.size() == c32test.size());
     assert(c32[2] == c32test[2]);
     
-    assert(startswith<char32_t>(a32, U"abcde\n\n"));
+    assert(startswith(a32, U"abcde\n\n"));
+    assert(startswith(u"abcde\n\n", u"abcde\n\n"));
+    assert(!startswith("abcde\n\n", "be\n\n"));
+    assert(startswith(a32, u8tou32(a8)));
 }
 
 class person {

@@ -12,6 +12,7 @@
 #include <boost/exception/all.hpp>
 #include <boost/optional.hpp>
 #include <boost/optional/optional_io.hpp>
+
 class io_error : public boost::exception, public std::exception { };
 class parse_error: public boost::exception, public std::exception { };
 class invalid_operation: public boost::exception, public std::exception { };
@@ -125,9 +126,8 @@ namespace lib {
         return ret;
     }
 
-     /**
+    /**
      *  @breif 文字列sが文字列startで始まるかどうかを判定する
-
      *  @param s 文字列
      *  @param start 開始すべき文字列
      *  @return 判定
@@ -137,18 +137,45 @@ namespace lib {
      */
     template <typename T = char32_t>
     inline bool startswith(
-        const std::basic_string<T> &s,
-        const std::basic_string<T> &start) {
-        if (s.size() < start.size()) {
-            return false;
-        }
-        size_t startsize = start.size();
-        for (size_t i = 0; i < startsize; i++) {
-            if (s[i] != start[i]) {
-                return false;
-            }
-        }
-        return true;
+        const T* s,
+        const T* start) {
+        size_t i;
+        for (i = 0; s[i] && start[i] && s[i] == start[i]; i++) ;
+        return (start[i] == 0);
+    }
+    /**
+     *  @breif 文字列sが文字列startで始まるかどうかを判定する
+     *  @param s 文字列
+     *  @param start 開始すべき文字列
+     *  @return 判定
+     *  @retval true startで始まる
+     *  @retval false startで始まらない
+     *  @pre Tがstd::charT継承クラス(char32_tなど)以外のときのコンパイル結果およびその動作は未定義である．
+     */
+    template <typename T = char32_t>
+    inline bool startswith(
+        const std::basic_string<T>& s,
+        const std::basic_string<T>& start) {
+        size_t i;
+        for (i = 0; s[i] && start[i] && s[i] == start[i]; i++) ;
+        return (start[i] == 0);
+    }
+    /**
+     *  @breif 文字列sが文字列startで始まるかどうかを判定する
+     *  @param s 文字列
+     *  @param start 開始すべき文字列
+     *  @return 判定
+     *  @retval true startで始まる
+     *  @retval false startで始まらない
+     *  @pre Tがstd::charT継承クラス(char32_tなど)以外のときのコンパイル結果およびその動作は未定義である．
+     */
+    template <typename T = char32_t>
+    inline bool startswith(
+        const std::basic_string<T>& s,
+        const T* start) {
+        size_t i;
+        for (i = 0; s[i] && start[i] && s[i] == start[i]; i++) ;
+        return (start[i] == 0);
     }
 
     /**
@@ -203,6 +230,25 @@ namespace lib {
             p = pb;
         }
         return ret;
+    }
+
+    /**
+     * @brief 文字列strが数値として読み取れるかどうかを返す
+     * @param str 文字列
+     * @return 判定
+     * @retval true 数値として読み取れる
+     * @retval false 数値として読み取れない
+     */
+    inline int isdigit(const std::u32string& str) {
+        bool none = true;
+        char *t = &u32tou8(str)[0];
+        while (*t) {
+            if (!std::isdigit((int)*t++)) {
+                return false;
+            }
+            none = false;
+        }
+        return !none;
     }
 
     /**

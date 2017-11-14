@@ -8,7 +8,7 @@ using namespace lib;
 void test_string();
 void test_property();
 
-int main(int argc, char** argv)
+int main()
 {
     test_string();
     //test_property();

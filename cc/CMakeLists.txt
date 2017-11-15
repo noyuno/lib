@@ -5,7 +5,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_CXX_FLAGS "-Wall -Wextra --std=c++14")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra --std=c++14 -stdlib=libc++ -I/usr/include/libcxxabi")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 

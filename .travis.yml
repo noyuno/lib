@@ -1,7 +1,7 @@
 language: cpp
 dist: trusty
 script:
-    - $CXX --version
+    - clang++ --version
     - cmake -version
     - cd cc
     - cmake .
@@ -11,8 +11,7 @@ compiler:
     - clang
 install:
     - sudo apt-get -qq update
-    - sudo apt-get -qq install libboost-exception-dev libboost-program-options-dev
-    - export CXX=clang++
+    - sudo apt-get -qq install libc++ libboost-exception-dev libboost-program-options-dev
 notifications:
   slack:
     secure: EOY7qRjPnaWhoVjS2KxHguN/qnYJalJ/AC9xEYD+sBZunq/e5Q7Y5Bd82aTSAuDhWIqeOTDl3PhwCQvGE6slK5v1AvAhieeysj3DLQqxZ+RtI5rNXb/+D0AG39S22qv6tTF7KXtq6LuBOMnRWyf2ow3JlRxRhVqiBtH6h+2R/cExz1Ue8mnsc7A88cKSSDoVaiq9Xb07xzM5SWQBtKcS8t4pJVh9mDyUshSok4g+bwJHK49b25ZfQcpemFeu/XvUNhx9ilaIVzrhfw7kmCF81vXWIY9lPxy/aHTN+BQe5+2sJ4uVJn1Ijio8iNjcXI2IB6XY/v4JVY0j/JcSTJbytgzumV174VL0sqjCtuRUth/2yJfGkGc9QvjXKVhtLmdqLKNp3clFSX3yHUS9tZF3Lx0gmSJE6g+4hyhRVWBvpEKMcGfetw1dKqL7HLDmYaOrA89FRn4TrNW8FOLxm9ZmsZbwudtKsHmdxFTJWAjDnne+UyCuZ6SOmyOGTxdfztMa06RLRNT3xl4HVCq0eBwZLvLaF1NqdAMWctVsMn5/k6bxpp758p2eZzpwD9e6sAsIoRz1CfdNTQO6lbKaManYtAzBCUuLchl0VC8zAPEJLsmoXGBYS+1l9LwHNd2POiB+r8UeCRcGp+hIJs/H48NrITpsIa+0Vg1gVbRswTqiULU=
